@@ -17,7 +17,8 @@ const common = {
         vendor: Object.keys(pkg.dependencies)
     },
     output: {
-        path: PATHS.build
+        path: PATHS.build,
+        filename: '[name].js'
     },
     plugins: [
         new HtmlWebpackPlugin({
