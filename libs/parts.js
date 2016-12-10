@@ -37,7 +37,7 @@ exports.minify = function() {
         plugins: [
             new webpack.optimize.UglifyJsPlugin({
                 compress: {
-                    warning: false
+                    warnings: false
                 }
             })
         ]
@@ -51,6 +51,20 @@ exports.setFreeVariable = function(key, value) {
     return {
         plugins: [
             new webpack.DefinePlugin(env)
+        ]
+    };
+};
+
+exports.extractBundle = function(options) {
+    const entry = {};
+    entry[options.name] = options.entries;
+
+    return {
+        entry: entry,
+        plugins: [
+            new webpack.optimize.CommonsChunkPlugin({
+                names: [options.name, 'manifest']
+            })
         ]
     };
 };

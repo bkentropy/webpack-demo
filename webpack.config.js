@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const merge = require('webpack-merge');
 const validate = require('webpack-validator');
 const parts = require('./libs/parts');
+const pkg = require('./package.json');
 
 const PATHS = {
     app: path.join(__dirname, 'app'),
@@ -12,11 +13,11 @@ const PATHS = {
 
 const common = {
     entry: {
-        app: PATHS.app
+        app: PATHS.app,
+        vendor: Object.keys(pkg.dependencies)
     },
     output: {
-        path: PATHS.build,
-        filename: '[name].js'
+        path: PATHS.build
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -31,12 +32,23 @@ case 'build':
     config = merge(
         common,
         {
-            devtool: 'source-map'
+            devtool: 'source-map',
+            output: {
+                path: PATHS.build,
+                filename: '[name].[chunkhash].js',
+                // This is used for require.ensure. The setup
+                // will work without but this is useful to set.
+                chunkFilename: '[chunkhash].js'
+            }
         },
         parts.setFreeVariable(
             'process.env.NODE_ENV',
             'production'
         ),
+        parts.extractBundle({
+            name: 'vendor',
+            entries: ['react']
+        }),
         parts.minify(),
         parts.setupCSS(PATHS.app)
     );
