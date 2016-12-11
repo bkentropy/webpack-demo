@@ -42,7 +42,8 @@ case 'build':
                 chunkFilename: '[chunkhash].js'
             }
         },
-        parts.setFreeVariable(
+        parts.clean(PATHS.build),
+        parts.setFreeVariable( // this let certain variables be referred to as strings or something, was weird didn't quite understand how it could help
             'process.env.NODE_ENV',
             'production'
         ),

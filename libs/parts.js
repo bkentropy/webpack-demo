@@ -1,5 +1,17 @@
 const webpack = require('webpack');
 
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+/*
+================================================================================
+Random Notes:
+I think I would rename a file like this. Libs directory makes sense, I thought
+I would also like libs/lib.js, but then I realized there could be other
+libraries, potentially 3rd party ones. But this file is a collection of plugins
+and loaders. These seem like good things to focus on.
+
+================================================================================
+*/
+
 exports.devServer = function(options) {
     return {
         devServer: {
@@ -64,6 +76,19 @@ exports.extractBundle = function(options) {
         plugins: [
             new webpack.optimize.CommonsChunkPlugin({
                 names: [options.name, 'manifest']
+            })
+        ]
+    };
+};
+
+// Note about this plugin. It IS NOT a webpack plugin but something else. I am
+// liking the others better because they are more directly webpack related. I
+// think I should write an npm script that will `rm -rf ./build && wepack`
+exports.clean = function(path) {
+    return {
+        plugins: [
+            new CleanWebpackPlugin([path], {
+                root: process.cwd()
             })
         ]
     };
