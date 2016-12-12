@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "stats": "webpack --profile --json > stats.json",
     "start": "webpack-dev-server",
     "buildLoud": "webpack --display-modules",
     "build": "webpack"
