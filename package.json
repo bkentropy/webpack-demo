@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "deploy": "gh-pages -d build",
     "stats": "webpack --profile --json > stats.json",
     "start": "webpack-dev-server",
     "buildLoud": "webpack --display-modules",
@@ -21,6 +22,7 @@
     "eslint-plugin-react": "^6.8.0",
     "extract-text-webpack-plugin": "^1.0.1",
     "favicons-webpack-plugin": "0.0.7",
+    "gh-pages": "^0.12.0",
     "html-webpack-plugin": "^2.24.1",
     "purifycss-webpack-plugin": "^2.0.3",
     "style-loader": "^0.13.1",
