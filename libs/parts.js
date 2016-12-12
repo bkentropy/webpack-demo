@@ -2,6 +2,7 @@ const webpack = require('webpack');
 
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const PurifyCSSPlugin = require('purifycss-webpack-plugin');
 /*
 ================================================================================
 Random Notes:
@@ -11,7 +12,7 @@ libraries, potentially 3rd party ones. But this file is a collection of plugins
 and loaders. These seem like good things to focus on.
 
 Survive say:
-Consider the webpack.optimize.DedupePlugin() 
+Consider the webpack.optimize.DedupePlugin()
 
 ================================================================================
 */
@@ -117,5 +118,16 @@ exports.setupCSS = function(paths) {
                 }
             ]
         }
+    };
+};
+
+exports.purifyCSS = function(paths) {
+    return {
+        plugins: [
+            new PurifyCSSPlugin({
+                basePath: process.cwd(),
+                paths: paths
+            })
+        ]
     };
 };

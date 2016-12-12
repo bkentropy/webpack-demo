@@ -1,7 +1,12 @@
 body {
-  background: red;
+  background: green;
 }
 
-:local(.redButton) {
-  background: white;
+.outer {
+  width: 100%;
+  text-align: center;
+}
+
+.inner {
+  display: inline-block;
 }

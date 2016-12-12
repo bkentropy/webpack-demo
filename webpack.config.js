@@ -10,7 +10,7 @@ const pkg = require('./package.json');
 const PATHS = {
     app: path.join(__dirname, 'app'),
     style: [
-        path.join(__dirname, 'node_modules', 'purecuss'),
+        path.join(__dirname, 'node_modules', 'purecss'),
         path.join(__dirname, 'app', 'main.css')
     ],
     build: path.join(__dirname, 'build')
@@ -59,7 +59,8 @@ case 'build':
             entries: ['react']
         }),
         parts.minify(),
-        parts.extractCSS(PATHS.style)
+        parts.extractCSS(PATHS.style),
+        parts.purifyCSS([PATHS.app])
     );
     break;
 default:
