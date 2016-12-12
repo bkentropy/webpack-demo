@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 /*
 ================================================================================
 Random Notes:
@@ -8,6 +9,9 @@ I think I would rename a file like this. Libs directory makes sense, I thought
 I would also like libs/lib.js, but then I realized there could be other
 libraries, potentially 3rd party ones. But this file is a collection of plugins
 and loaders. These seem like good things to focus on.
+
+Survive say:
+Consider the webpack.optimize.DedupePlugin() 
 
 ================================================================================
 */
@@ -27,20 +31,6 @@ exports.devServer = function(options) {
                 multiStep: true
             })
         ]
-    };
-};
-
-exports.setupCSS = function(paths) {
-    return {
-        module: {
-            loaders: [
-                {
-                    test: /\.css$/,
-                    loaders: ['style', 'css'],
-                    include: paths
-                }
-            ]
-        }
     };
 };
 
@@ -91,5 +81,41 @@ exports.clean = function(path) {
                 root: process.cwd()
             })
         ]
+    };
+};
+
+// This function and the one below have similar purposes. But extract is more
+// advanced. And it also better for production, as we will not be using it for
+// development.
+exports.extractCSS = function(paths) {
+    return {
+        module: {
+            loaders: [
+                {
+                    test: /\.css$/,
+                    loader: ExtractTextPlugin.extract('style', 'css'),
+                    include: paths
+                }
+            ]
+        },
+        plugins: [
+            // Output extracted CSS to a file
+            new ExtractTextPlugin('[name].[chunkhash].css')
+        ]
+    };
+};
+
+
+exports.setupCSS = function(paths) {
+    return {
+        module: {
+            loaders: [
+                {
+                    test: /\.css$/,
+                    loaders: ['style', 'css'],
+                    include: paths
+                }
+            ]
+        }
     };
 };

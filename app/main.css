@@ -1,7 +1,7 @@
 body {
-  background: lime;
+  background: red;
 }
 
 :local(.redButton) {
-  background: green;
+  background: white;
 }

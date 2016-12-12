@@ -1,4 +1,6 @@
 const path = require('path');
+// The HtmlWebpackPlugin will pickup the CSS files and inject them into index.html
+// In dev mode they will be extracted and loaded dynamically
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const merge = require('webpack-merge');
 const validate = require('webpack-validator');
@@ -7,12 +9,17 @@ const pkg = require('./package.json');
 
 const PATHS = {
     app: path.join(__dirname, 'app'),
+    style: [
+        path.join(__dirname, 'node_modules', 'purecuss'),
+        path.join(__dirname, 'app', 'main.css')
+    ],
     build: path.join(__dirname, 'build')
 };
 
 
 const common = {
     entry: {
+        style: PATHS.style,
         app: PATHS.app,
         vendor: Object.keys(pkg.dependencies)
     },
@@ -52,7 +59,7 @@ case 'build':
             entries: ['react']
         }),
         parts.minify(),
-        parts.setupCSS(PATHS.app)
+        parts.extractCSS(PATHS.style)
     );
     break;
 default:
@@ -61,7 +68,7 @@ default:
         {
             devtool: 'source-map'
         },
-        parts.setupCSS(PATHS.app),
+        parts.setupCSS(PATHS.style), // note that this is different than build
         parts.devServer({
             host: process.env.HOST,
             port: process.env.PORT
